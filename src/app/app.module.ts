@@ -20,6 +20,7 @@ import { StatService } from 'src/stats/stat.service';
       entities: [],
       synchronize: true,
       autoLoadEntities: true,
+      ssl: true,
     }),
 
     TypeOrmModule.forFeature([
