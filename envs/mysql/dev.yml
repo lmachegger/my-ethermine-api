@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'etherminestats'
+      MYSQL_USER: 'etherminestats'
+      MYSQL_PASSWORD: 'etherminestats'
+      MYSQL_ROOT_PASSWORD: 'etherminestats'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
