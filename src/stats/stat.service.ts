@@ -47,7 +47,7 @@ export class StatService {
     const stat = dtoToStat(dto);
     const saved = await this.statRepo.save(stat);
     const savedDto = statToDto(saved);
-    return statToDto(savedDto);
+    return savedDto;
   }
 
   async getAll(limit: number): Promise<StatDto[]> {

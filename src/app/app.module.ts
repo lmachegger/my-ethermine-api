@@ -22,10 +22,6 @@ import { StatService } from 'src/stats/stat.service';
       autoLoadEntities: true,
       ssl: {
         rejectUnauthorized: false,
-        // ca: configService.dbServerCA,    // downloaded from  GCC
-        // cert: configService.dbClientCert, // downloaded from  GCC
-        // key: configService.dbClientKey,  // downloaded from  GCC
-        // enableTrace: true,
       },
     }),
 
