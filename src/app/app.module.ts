@@ -20,7 +20,13 @@ import { StatService } from 'src/stats/stat.service';
       entities: [],
       synchronize: true,
       autoLoadEntities: true,
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+        // ca: configService.dbServerCA,    // downloaded from  GCC
+        // cert: configService.dbClientCert, // downloaded from  GCC
+        // key: configService.dbClientKey,  // downloaded from  GCC
+        // enableTrace: true,
+      },
     }),
 
     TypeOrmModule.forFeature([
