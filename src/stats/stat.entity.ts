@@ -14,11 +14,11 @@ export class StatEntity {
   @Column()
   time: number;
 
-  @Column()
-  reportedHashrate: number;
+  @Column({ type: 'real' })
+  reportedHashrate: string;
 
-  @Column()
-  currentHashrate: number;
+  @Column({ type: 'real' })
+  currentHashrate: string;
 
   @Column()
   validShares: number;
@@ -29,15 +29,15 @@ export class StatEntity {
   @Column()
   staleShares: number;
 
-  @Column()
-  averageHashrate: number;
+  @Column({ type: 'real' })
+  averageHashrate: string;
 
-  @Column()
-  coinsPerMin: number;
+  @Column({ type: 'real' })
+  coinsPerMin: string;
 
-  @Column()
-  usdPerMin: number;
+  @Column({ type: 'real' })
+  usdPerMin: string;
 
-  @Column()
-  btcPerMin: number;
+  @Column({ type: 'real' })
+  btcPerMin: string;
 }
