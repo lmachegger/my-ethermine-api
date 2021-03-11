@@ -9,14 +9,16 @@ import { StatService } from 'src/stats/stat.service';
 import { getSqljsManager } from 'typeorm';
 
 const getssl = () => {
-  if (process.env.DB_SSL) {
-    return {};
-  } else {
+  if (process.env.DB_SSL && process.env.DB_SSL === 'TRUE') {
+    console.log('1');
     return {
       ssl: {
         rejectUnauthorized: false,
       },
     };
+  } else {
+    console.log('2');
+    return {};
   }
 };
 
@@ -24,6 +26,7 @@ const getssl = () => {
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
+      ...getssl(),
       type: 'postgres',
       host: process.env.DB_HOST,
       port: +process.env.DB_PORT,
@@ -33,7 +36,6 @@ const getssl = () => {
       entities: [],
       synchronize: true,
       autoLoadEntities: true,
-      ...getssl(),
     }),
 
     TypeOrmModule.forFeature([
