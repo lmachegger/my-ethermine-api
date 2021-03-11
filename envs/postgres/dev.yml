@@ -1,0 +1,13 @@
+version: '3'
+services:
+  db_colorblocking_manage:
+    image: postgres:11.6-alpine
+    restart: always
+    # volumes:
+    #   - ../data/db:/var/lib/postgresql/data
+    ports:
+      - '5446:5432'
+    environment:
+      - 'POSTGRES_USER=etherminestats'
+      - 'POSTGRES_PASSWORD=etherminestats'
+      - 'POSTGRES_DB=etherminestats'

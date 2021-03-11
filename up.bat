@@ -1,3 +1,3 @@
 @echo off
 
-docker-compose -f envs/mysql/dev.yml up --build -d
+docker-compose -f envs/postgres/dev.yml up --build -d

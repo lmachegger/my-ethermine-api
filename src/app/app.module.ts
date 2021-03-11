@@ -6,6 +6,19 @@ import { ConfigModule } from '@nestjs/config';
 import { StatEntity } from 'src/stats/stat.entity';
 import { StatController } from 'src/stats/stat.controller';
 import { StatService } from 'src/stats/stat.service';
+import { getSqljsManager } from 'typeorm';
+
+const getssl = () => {
+  if (process.env.DB_SSL) {
+    return {};
+  } else {
+    return {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    };
+  }
+};
 
 @Module({
   imports: [
@@ -20,9 +33,7 @@ import { StatService } from 'src/stats/stat.service';
       entities: [],
       synchronize: true,
       autoLoadEntities: true,
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      ...getssl(),
     }),
 
     TypeOrmModule.forFeature([
