@@ -3,16 +3,16 @@ import { StatEntity } from './stat.entity';
 
 export function dtoToStat(dto: StatDto): StatEntity {
   const stat = new StatEntity();
-  stat.averageHashrate = dto.averageHashrate.toString();
-  stat.btcPerMin = dto.btcPerMin.toString();
-  stat.coinsPerMin = dto.coinsPerMin.toString();
-  stat.currentHashrate = dto.currentHashrate.toString();
+  stat.averageHashrate = dto.averageHashrate?.toString();
+  stat.btcPerMin = dto.btcPerMin?.toString();
+  stat.coinsPerMin = dto.coinsPerMin?.toString();
+  stat.currentHashrate = dto.currentHashrate?.toString();
   stat.id = dto.id;
   stat.invalidShares = dto.invalidShares;
-  stat.reportedHashrate = dto.reportedHashrate.toString();
+  stat.reportedHashrate = dto.reportedHashrate?.toString();
   stat.staleShares = dto.staleShares;
   stat.time = dto.time;
-  stat.usdPerMin = dto.usdPerMin.toString();
+  stat.usdPerMin = dto.usdPerMin?.toString();
   stat.validShares = dto.validShares;
   return stat;
 }
