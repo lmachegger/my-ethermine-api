@@ -36,3 +36,40 @@ export function statToDto(stat: StatEntity): StatDto {
 export function mapStatsToDto(stats: StatEntity[]): StatDto[] {
   return stats.map((stat) => statToDto(stat));
 }
+
+export function calculateAverage(stats: StatEntity[]): StatDto {
+  let reportedHashrate = 0;
+  let currentHashrate = 0;
+  let validShares = 0;
+  let invalidShares = 0;
+  let staleShares = 0;
+  let averageHashrate = 0;
+  let coinsPerMin = 0;
+  let usdPerMin = 0;
+  let btcPerMin = 0;
+
+  stats.forEach((stat) => {
+    reportedHashrate += +stat.reportedHashrate;
+    currentHashrate += +stat.currentHashrate;
+    averageHashrate += +stat.averageHashrate;
+    validShares += stat.validShares;
+    invalidShares += stat.invalidShares;
+    staleShares += stat.staleShares;
+    coinsPerMin += +stat.coinsPerMin;
+    usdPerMin += +stat.usdPerMin;
+    btcPerMin += +stat.btcPerMin;
+  });
+
+  const result = new StatDto();
+  result.reportedHashrate = reportedHashrate / stats.length;
+  result.currentHashrate = currentHashrate / stats.length;
+  result.averageHashrate = averageHashrate / stats.length;
+  result.validShares = validShares / stats.length;
+  result.invalidShares = invalidShares / stats.length;
+  result.staleShares = staleShares / stats.length;
+  result.coinsPerMin = coinsPerMin / stats.length;
+  result.usdPerMin = usdPerMin / stats.length;
+  result.btcPerMin = btcPerMin / stats.length;
+
+  return result;
+}

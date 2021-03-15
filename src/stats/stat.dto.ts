@@ -1,6 +1,6 @@
 export class StatDto {
-  id: number;
-  time: number; // unix timestamp
+  id?: number;
+  time?: number; // unix timestamp
   reportedHashrate: number; // H/s
   currentHashrate: number; // H/s
   validShares: number;

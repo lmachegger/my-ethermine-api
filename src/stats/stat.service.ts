@@ -4,7 +4,12 @@ import { Repository } from 'typeorm';
 import { apiObjectToDto, fetchFromApi } from './fetch-stats.utils';
 import { StatDto } from './stat.dto';
 import { StatEntity } from './stat.entity';
-import { dtoToStat, mapStatsToDto, statToDto } from './stat.utils';
+import {
+  calculateAverage,
+  dtoToStat,
+  mapStatsToDto,
+  statToDto,
+} from './stat.utils';
 
 @Injectable()
 export class StatService {
@@ -59,5 +64,10 @@ export class StatService {
     });
 
     return mapStatsToDto(stats);
+  }
+
+  async getAvg(): Promise<StatDto> {
+    const stats = await this.statRepo.find();
+    return calculateAverage(stats);
   }
 }

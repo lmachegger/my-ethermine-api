@@ -45,4 +45,20 @@ export class StatController {
       );
     }
   }
+
+  @Get('average')
+  async getAvg(): Promise<StatDto> {
+    try {
+      return await this.statService.getAvg();
+    } catch (e) {
+      console.error(e);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Error creating stat entry',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
