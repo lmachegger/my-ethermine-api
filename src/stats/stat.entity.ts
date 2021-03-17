@@ -14,30 +14,30 @@ export class StatEntity {
   @Column()
   time: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', nullable: true })
   reportedHashrate: string;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', nullable: true })
   currentHashrate: string;
 
-  @Column()
+  @Column({ nullable: true })
   validShares: number;
 
-  @Column()
+  @Column({ nullable: true })
   invalidShares: number;
 
-  @Column()
+  @Column({ nullable: true })
   staleShares: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', nullable: true })
   averageHashrate: string;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', nullable: true })
   coinsPerMin: string;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', nullable: true })
   usdPerMin: string;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', nullable: true })
   btcPerMin: string;
 }
