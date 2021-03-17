@@ -6,6 +6,7 @@ import { StatDto } from './stat.dto';
 import { StatEntity } from './stat.entity';
 import {
   calculateAverage,
+  calculateMax,
   dtoToStat,
   mapStatsToDto,
   statToDto,
@@ -69,5 +70,13 @@ export class StatService {
   async getAvg(): Promise<StatDto> {
     const stats = await this.statRepo.find();
     return calculateAverage(stats);
+  }
+
+  async getMax(): Promise<StatDto> {
+    const stats = await this.statRepo.find();
+    const maxPeak = stats.reduce((p, c) =>
+      p.currentHashrate > c.currentHashrate ? p : c,
+    );
+    return calculateMax(stats);
   }
 }

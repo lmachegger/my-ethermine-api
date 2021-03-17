@@ -55,7 +55,23 @@ export class StatController {
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'Error creating stat entry',
+          error: 'Error getting avg',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get('max')
+  async getMax(): Promise<StatDto> {
+    try {
+      return await this.statService.getMax();
+    } catch (e) {
+      console.error(e);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Error getting max',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
