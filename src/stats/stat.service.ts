@@ -8,7 +8,7 @@ import {
   calculateAverage,
   calculateMax,
   dtoToStat,
-  mapStatsToDto,
+  mapStatsToHumanReadableDto,
   statToDto,
 } from './stat.utils';
 
@@ -64,7 +64,7 @@ export class StatService {
       take: limit,
     });
 
-    return mapStatsToDto(stats);
+    return mapStatsToHumanReadableDto(stats);
   }
 
   async getAvg(): Promise<StatDto> {

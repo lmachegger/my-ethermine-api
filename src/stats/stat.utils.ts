@@ -37,6 +37,12 @@ export function mapStatsToDto(stats: StatEntity[]): StatDto[] {
   return stats.map((stat) => statToDto(stat));
 }
 
+export function mapStatsToHumanReadableDto(stats: StatEntity[]): StatDto[] {
+  return stats.map((stat) => {
+    return dtoToHumanReadableDto(statToDto(stat));
+  });
+}
+
 export function calculateAverage(stats: StatEntity[]): StatDto {
   let reportedHashrate = 0;
   let currentHashrate = 0;
@@ -71,7 +77,7 @@ export function calculateAverage(stats: StatEntity[]): StatDto {
   result.usdPerMin = usdPerMin / stats.length;
   result.btcPerMin = btcPerMin / stats.length;
 
-  return result;
+  return dtoToHumanReadableDto(result);
 }
 
 export function calculateMax(stats: StatEntity[]): StatDto {
@@ -108,5 +114,16 @@ export function calculateMax(stats: StatEntity[]): StatDto {
   result.usdPerMin = usdPerMin;
   result.btcPerMin = btcPerMin;
 
+  return dtoToHumanReadableDto(result);
+}
+
+export function dtoToHumanReadableDto(dto: StatDto): StatDto {
+  const result = dto;
+  result.reportedHashrate /= 1000000;
+  result.currentHashrate /= 1000000;
+  result.averageHashrate /= 1000000;
+  result.coinsPerMin *= 60;
+  result.usdPerMin *= 60;
+  result.btcPerMin *= 60;
   return result;
 }
