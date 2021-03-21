@@ -1,6 +1,14 @@
 import { StatDto } from './stat.dto';
 import { StatEntity } from './stat.entity';
 
+export enum StatInterval {
+  ALL = 'ALL',
+  YEAR = 'YEAR',
+  MONTH = 'MONTH',
+  WEEK = 'WEEK',
+  DAY = 'DAY',
+}
+
 export function dtoToStat(dto: StatDto): StatEntity {
   const stat = new StatEntity();
   stat.averageHashrate = dto.averageHashrate?.toString();
@@ -126,4 +134,29 @@ export function dtoToHumanReadableDto(dto: StatDto): StatDto {
   result.usdPerMin *= 60;
   result.btcPerMin *= 60;
   return result;
+}
+
+// returns UNIX timestamp of given interval
+export function getMinUnixTimeByInterval(interval: StatInterval): number {
+  const d = new Date();
+  let unixTime = 0;
+  switch (interval) {
+    case StatInterval.ALL:
+      return 0;
+    case StatInterval.YEAR:
+      unixTime = d.setFullYear(d.getFullYear() - 1);
+      break;
+    case StatInterval.MONTH:
+      unixTime = d.setMonth(d.getMonth() - 1);
+      break;
+    case StatInterval.WEEK:
+      unixTime = d.setDate(d.getDate() - 7);
+      break;
+    case StatInterval.DAY:
+      unixTime = d.setDate(d.getDate() - 1);
+      break;
+  }
+
+  unixTime /= 1000; // ms to s
+  return Math.round(unixTime);
 }

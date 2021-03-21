@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
+import { AllStatDto } from './allStat.dto';
 import { apiObjectToDto, fetchFromApi } from './fetch-stats.utils';
 import { StatDto } from './stat.dto';
 import { StatEntity } from './stat.entity';
@@ -8,7 +9,9 @@ import {
   calculateAverage,
   calculateMax,
   dtoToStat,
+  getMinUnixTimeByInterval,
   mapStatsToHumanReadableDto,
+  StatInterval,
   statToDto,
 } from './stat.utils';
 
@@ -56,8 +59,37 @@ export class StatService {
     return savedDto;
   }
 
-  async getAll(limit: number): Promise<StatDto[]> {
+  // returns allStats, avgStats, and maxStats
+  async getAllStats(interval: StatInterval): Promise<AllStatDto> {
+    const minTimeStamp = getMinUnixTimeByInterval(interval);
+    const statEntities = await this.statRepo.find({
+      where: {
+        time: MoreThanOrEqual(minTimeStamp),
+      },
+      order: {
+        time: 'DESC',
+      },
+    });
+
+    const stats = mapStatsToHumanReadableDto(statEntities);
+    const avgs = calculateAverage(statEntities);
+    const maxs = calculateMax(statEntities);
+
+    const allStatDto = new AllStatDto();
+    allStatDto.stats = stats;
+    allStatDto.avgStats = avgs;
+    allStatDto.maxStats = maxs;
+
+    return allStatDto;
+  }
+
+  // returns allStats
+  async getAll(limit: number, interval: StatInterval): Promise<StatDto[]> {
+    const minTimeStamp = getMinUnixTimeByInterval(interval);
     const stats = await this.statRepo.find({
+      where: {
+        time: MoreThanOrEqual(minTimeStamp),
+      },
       order: {
         time: 'DESC',
       },
