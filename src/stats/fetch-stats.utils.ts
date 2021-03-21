@@ -38,14 +38,14 @@ export function fetchFromApi(onData: (data) => void, onError: (error) => void) {
 export function apiObjectToDto(apiObj: any): StatDto {
   const dto = new StatDto();
   dto.averageHashrate = apiObj.data.averageHashrate;
-  dto.btcPerHour = apiObj.data.btcPerHour;
-  dto.coinsPerHour = apiObj.data.coinsPerHour;
+  dto.btcPerHour = apiObj.data.btcPerMin;
+  dto.coinsPerHour = apiObj.data.coinsPerMin;
   dto.currentHashrate = apiObj.data.currentHashrate;
   dto.invalidShares = apiObj.data.invalidShares;
   dto.reportedHashrate = apiObj.data.reportedHashrate;
   dto.staleShares = apiObj.data.staleShares;
   dto.time = apiObj.data.time;
-  dto.usdPerHour = apiObj.data.usdPerHour;
+  dto.usdPerHour = apiObj.data.usdPerMin;
   dto.validShares = apiObj.data.validShares;
   return dto;
 }
