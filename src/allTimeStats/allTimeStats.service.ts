@@ -59,6 +59,15 @@ export class AllTimeStatService {
     return savedDto;
   }
 
+  async createAll(dtos: StatDto[]): Promise<StatDto[]> {
+    const result = new Array();
+    for await (const dto of dtos) {
+      const created = await this.create(dto);
+      result.push(created);
+    }
+    return result;
+  }
+
   // returns allStats, avgStats, and maxStats
   async getAllStats(): Promise<AllStatDto> {
     const statEntities = await this.statRepo.find({
