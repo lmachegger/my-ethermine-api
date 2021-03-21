@@ -6,7 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 import { StatEntity } from 'src/stats/stat.entity';
 import { StatController } from 'src/stats/stat.controller';
 import { StatService } from 'src/stats/stat.service';
-import { getSqljsManager } from 'typeorm';
 import { AllTimeStatController } from 'src/allTimeStats/allTimeStats.controller';
 import { AllTimeStatService } from 'src/allTimeStats/allTimeStats.service';
 import { AllTimeStatEntity } from 'src/allTimeStats/allTimeStats.entity';

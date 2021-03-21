@@ -11,7 +11,7 @@ export class AllTimeStatEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   time: number;
 
   @Column({ type: 'double precision', nullable: true })
@@ -40,4 +40,7 @@ export class AllTimeStatEntity {
 
   @Column({ type: 'double precision', nullable: true })
   btcPerMin: string;
+
+  @Column({ nullable: true })
+  isMaxEntity: boolean;
 }

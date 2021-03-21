@@ -106,9 +106,6 @@ export class StatService {
 
   async getMax(): Promise<StatDto> {
     const stats = await this.statRepo.find();
-    const maxPeak = stats.reduce((p, c) =>
-      p.currentHashrate > c.currentHashrate ? p : c,
-    );
     return calculateMax(stats);
   }
 }

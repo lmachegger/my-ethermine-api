@@ -10,4 +10,5 @@ export class StatDto {
   coinsPerMin: number; // Estimated number of coins mined per minute (based on your average hashrate as well as the average block time and difficulty of the network over the last 24 hours.)
   usdPerMin: number; // Estimated number of USD mined per minute (based on your average hashrate as well as the average block time and difficulty of the network over the last 24 hours.)
   btcPerMin: number; // Estimated number of BTC mined per minute (based on your average hashrate as well as the average block time and difficulty of the network over the last 24 hours.)
+  isMaxEntity?: boolean; // Estimated number of BTC mined per minute (based on your average hashrate as well as the average block time and difficulty of the network over the last 24 hours.)
 }

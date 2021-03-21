@@ -1,3 +1,5 @@
+import { AllTimeStatEntity } from 'src/allTimeStats/allTimeStats.entity';
+import { AllTimeStatService } from 'src/allTimeStats/allTimeStats.service';
 import { StatDto } from './stat.dto';
 import { StatEntity } from './stat.entity';
 
@@ -8,6 +10,21 @@ export enum StatInterval {
   WEEK = 'WEEK',
   DAY = 'DAY',
 }
+
+export const MIN_ALLTIME_STAT_ENTITY: AllTimeStatEntity = {
+  id: null,
+  averageHashrate: '0',
+  currentHashrate: '0',
+  reportedHashrate: '0',
+  validShares: 0,
+  staleShares: 0,
+  invalidShares: 0,
+  btcPerMin: '0',
+  usdPerMin: '0',
+  coinsPerMin: '0',
+  time: null,
+  isMaxEntity: true,
+};
 
 export function dtoToStat(dto: StatDto): StatEntity {
   const stat = new StatEntity();
@@ -159,4 +176,21 @@ export function getMinUnixTimeByInterval(interval: StatInterval): number {
 
   unixTime /= 1000; // ms to s
   return Math.round(unixTime);
+}
+
+export function dtoToAllTimeStatMaxEntity(dto: StatDto): AllTimeStatEntity {
+  const ent = new AllTimeStatEntity();
+  ent.averageHashrate = (dto.averageHashrate * 1000000).toString();
+  ent.btcPerMin = (dto.btcPerMin / 60).toString();
+  ent.coinsPerMin = (dto.coinsPerMin / 60).toString();
+  ent.currentHashrate = (dto.currentHashrate * 1000000).toString();
+  ent.invalidShares = dto.invalidShares;
+  ent.reportedHashrate = (dto.reportedHashrate * 1000000).toString();
+  ent.staleShares = dto.staleShares;
+  ent.usdPerMin = (dto.usdPerMin / 60).toString();
+  ent.validShares = dto.validShares;
+  ent.time = null;
+  ent.isMaxEntity = true;
+
+  return ent;
 }

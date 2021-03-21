@@ -1,28 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, Repository } from 'typeorm';
+import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
+import { StatService } from '../stats/stat.service';
+import { IsNull, Not, Repository } from 'typeorm';
 import { AllStatDto } from '../stats/allStat.dto';
 import { apiObjectToDto, fetchFromApi } from '../stats/fetch-stats.utils';
 import { StatDto } from '../stats/stat.dto';
 import {
   calculateAverage,
   calculateMax,
+  dtoToAllTimeStatMaxEntity,
+  dtoToHumanReadableDto,
   dtoToStat,
-  getMinUnixTimeByInterval,
   mapStatsToHumanReadableDto,
-  StatInterval,
+  MIN_ALLTIME_STAT_ENTITY,
   statToDto,
 } from '../stats/stat.utils';
 import { AllTimeStatEntity } from './allTimeStats.entity';
+import { StatEntity } from 'src/stats/stat.entity';
 
 @Injectable()
 export class AllTimeStatService {
   private interval: any;
+  private maxInterval: any;
 
   constructor(
     @InjectRepository(AllTimeStatEntity)
-    private statRepo: Repository<AllTimeStatEntity>,
+    private allTimeStatRepo: Repository<AllTimeStatEntity>,
+    @InjectRepository(StatEntity)
+    private statRepo: Repository<StatEntity>,
   ) {
+    // fetch every 4h
     const fetchInterval = () => {
       this.fetchApiAndCreateStat();
     };
@@ -32,6 +39,16 @@ export class AllTimeStatService {
       clearInterval(this.interval);
     }
     this.interval = setInterval(fetchInterval, 14400 * 1000); // 4h
+
+    // fetch every 24h
+    const fetchMaxInterval = () => {
+      this.fetchMaxAndCreateStat();
+    };
+    fetchMaxInterval();
+    if (this.maxInterval) {
+      clearInterval(this.maxInterval);
+    }
+    this.maxInterval = setInterval(fetchMaxInterval, 86400 * 1000); // 24h
   }
 
   fetchApiAndCreateStat() {
@@ -46,15 +63,66 @@ export class AllTimeStatService {
     );
   }
 
+  async fetchMaxAndCreateStat() {
+    const all = await this.statRepo.find();
+    const newMaxDto = calculateMax(all);
+
+    const oldMaxEntity =
+      (await this.allTimeStatRepo.findOne({
+        isMaxEntity: true,
+        time: null,
+      })) || MIN_ALLTIME_STAT_ENTITY;
+    const oldMaxDto = dtoToHumanReadableDto(statToDto(oldMaxEntity));
+    console.log(newMaxDto);
+    console.log(oldMaxDto);
+    console.log(Math.max(newMaxDto.averageHashrate, oldMaxDto.averageHashrate));
+
+    // check all values, and update max dto
+    oldMaxDto.averageHashrate = Math.max(
+      newMaxDto.averageHashrate,
+      oldMaxDto.averageHashrate,
+    );
+    oldMaxDto.btcPerMin = Math.max(newMaxDto.btcPerMin, oldMaxDto.btcPerMin);
+    oldMaxDto.coinsPerMin = Math.max(
+      newMaxDto.coinsPerMin,
+      oldMaxDto.coinsPerMin,
+    );
+    oldMaxDto.currentHashrate = Math.max(
+      newMaxDto.currentHashrate,
+      oldMaxDto.currentHashrate,
+    );
+    oldMaxDto.invalidShares = Math.max(
+      newMaxDto.invalidShares,
+      oldMaxDto.invalidShares,
+    );
+    oldMaxDto.reportedHashrate = Math.max(
+      newMaxDto.reportedHashrate,
+      oldMaxDto.reportedHashrate,
+    );
+    oldMaxDto.staleShares = Math.max(
+      newMaxDto.staleShares,
+      oldMaxDto.staleShares,
+    );
+    oldMaxDto.usdPerMin = Math.max(newMaxDto.usdPerMin, oldMaxDto.usdPerMin);
+    oldMaxDto.validShares = Math.max(
+      newMaxDto.validShares,
+      oldMaxDto.validShares,
+    );
+    const allTimeStatMaxEntity = dtoToAllTimeStatMaxEntity(oldMaxDto);
+    allTimeStatMaxEntity.id = oldMaxDto.id;
+
+    await this.allTimeStatRepo.save(allTimeStatMaxEntity);
+  }
+
   async create(dto: StatDto): Promise<StatDto> {
     // dont allow duplicate entries
-    const statWithTime = await this.statRepo.findOne({
+    const statWithTime = await this.allTimeStatRepo.findOne({
       time: dto.time,
     });
     if (statWithTime) return;
 
     const stat = dtoToStat(dto);
-    const saved = await this.statRepo.save(stat);
+    const saved = await this.allTimeStatRepo.save(stat);
     const savedDto = statToDto(saved);
     return savedDto;
   }
@@ -70,7 +138,11 @@ export class AllTimeStatService {
 
   // returns allStats, avgStats, and maxStats
   async getAllStats(): Promise<AllStatDto> {
-    const statEntities = await this.statRepo.find({
+    const statEntities = await this.allTimeStatRepo.find({
+      where: {
+        time: Not(IsNull()),
+        isMaxEntity: IsNull(),
+      },
       order: {
         time: 'DESC',
       },
@@ -89,6 +161,6 @@ export class AllTimeStatService {
   }
 
   async delete(id: string): Promise<any> {
-    return await this.statRepo.delete(id);
+    return await this.allTimeStatRepo.delete(id);
   }
 }
