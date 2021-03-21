@@ -108,4 +108,8 @@ export class StatService {
     const stats = await this.statRepo.find();
     return calculateMax(stats);
   }
+
+  async delete(id: string): Promise<any> {
+    return await this.statRepo.delete(id);
+  }
 }
