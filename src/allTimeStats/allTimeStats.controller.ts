@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -41,6 +43,22 @@ export class AllTimeStatController {
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           error: 'Error getting alltimestat stats',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<any> {
+    try {
+      return await this.statService.delete(id);
+    } catch (e) {
+      console.error(e);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Error deleting alltimestat stats',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

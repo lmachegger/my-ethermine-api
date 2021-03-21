@@ -87,4 +87,8 @@ export class AllTimeStatService {
 
     return allStatDto;
   }
+
+  async delete(id: string): Promise<any> {
+    return await this.statRepo.delete(id);
+  }
 }
