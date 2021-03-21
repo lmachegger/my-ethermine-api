@@ -67,7 +67,7 @@ export class StatService {
         time: MoreThanOrEqual(minTimeStamp),
       },
       order: {
-        time: 'DESC',
+        time: 'ASC',
       },
     });
 
@@ -91,7 +91,7 @@ export class StatService {
         time: MoreThanOrEqual(minTimeStamp),
       },
       order: {
-        time: 'DESC',
+        time: 'ASC',
       },
       take: limit,
     });

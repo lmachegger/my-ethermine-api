@@ -144,7 +144,7 @@ export class AllTimeStatService {
         isMaxEntity: IsNull(),
       },
       order: {
-        time: 'DESC',
+        time: 'ASC',
       },
     });
 
