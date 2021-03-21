@@ -36,5 +36,16 @@ export function fetchFromApi(onData: (data) => void, onError: (error) => void) {
 }
 
 export function apiObjectToDto(apiObj: any): StatDto {
-  return apiObj.data as StatDto;
+  const dto = new StatDto();
+  dto.averageHashrate = apiObj.data.averageHashrate;
+  dto.btcPerHour = apiObj.data.btcPerHour;
+  dto.coinsPerHour = apiObj.data.coinsPerHour;
+  dto.currentHashrate = apiObj.data.currentHashrate;
+  dto.invalidShares = apiObj.data.invalidShares;
+  dto.reportedHashrate = apiObj.data.reportedHashrate;
+  dto.staleShares = apiObj.data.staleShares;
+  dto.time = apiObj.data.time;
+  dto.usdPerHour = apiObj.data.usdPerHour;
+  dto.validShares = apiObj.data.validShares;
+  return dto;
 }
