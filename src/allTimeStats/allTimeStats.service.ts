@@ -82,10 +82,10 @@ export class AllTimeStatService {
       newMaxDto.averageHashrate,
       oldMaxDto.averageHashrate,
     );
-    oldMaxDto.btcPerMin = Math.max(newMaxDto.btcPerMin, oldMaxDto.btcPerMin);
-    oldMaxDto.coinsPerMin = Math.max(
-      newMaxDto.coinsPerMin,
-      oldMaxDto.coinsPerMin,
+    oldMaxDto.btcPerHour = Math.max(newMaxDto.btcPerHour, oldMaxDto.btcPerHour);
+    oldMaxDto.coinsPerHour = Math.max(
+      newMaxDto.coinsPerHour,
+      oldMaxDto.coinsPerHour,
     );
     oldMaxDto.currentHashrate = Math.max(
       newMaxDto.currentHashrate,
@@ -103,7 +103,7 @@ export class AllTimeStatService {
       newMaxDto.staleShares,
       oldMaxDto.staleShares,
     );
-    oldMaxDto.usdPerMin = Math.max(newMaxDto.usdPerMin, oldMaxDto.usdPerMin);
+    oldMaxDto.usdPerHour = Math.max(newMaxDto.usdPerHour, oldMaxDto.usdPerHour);
     oldMaxDto.validShares = Math.max(
       newMaxDto.validShares,
       oldMaxDto.validShares,

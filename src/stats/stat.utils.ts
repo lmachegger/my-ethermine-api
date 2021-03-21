@@ -29,15 +29,15 @@ export const MIN_ALLTIME_STAT_ENTITY: AllTimeStatEntity = {
 export function dtoToStat(dto: StatDto): StatEntity {
   const stat = new StatEntity();
   stat.averageHashrate = dto.averageHashrate?.toString();
-  stat.btcPerMin = dto.btcPerMin?.toString();
-  stat.coinsPerMin = dto.coinsPerMin?.toString();
+  stat.btcPerMin = dto.btcPerHour?.toString();
+  stat.coinsPerMin = dto.coinsPerHour?.toString();
   stat.currentHashrate = dto.currentHashrate?.toString();
   stat.id = dto.id;
   stat.invalidShares = dto.invalidShares;
   stat.reportedHashrate = dto.reportedHashrate?.toString();
   stat.staleShares = dto.staleShares;
   stat.time = dto.time;
-  stat.usdPerMin = dto.usdPerMin?.toString();
+  stat.usdPerMin = dto.usdPerHour?.toString();
   stat.validShares = dto.validShares;
   return stat;
 }
@@ -45,15 +45,15 @@ export function dtoToStat(dto: StatDto): StatEntity {
 export function statToDto(stat: StatEntity): StatDto {
   const dto = new StatDto();
   dto.averageHashrate = +stat.averageHashrate;
-  dto.btcPerMin = +stat.btcPerMin;
-  dto.coinsPerMin = +stat.coinsPerMin;
+  dto.btcPerHour = +stat.btcPerMin;
+  dto.coinsPerHour = +stat.coinsPerMin;
   dto.currentHashrate = +stat.currentHashrate;
   dto.id = stat.id;
   dto.invalidShares = stat.invalidShares;
   dto.reportedHashrate = +stat.reportedHashrate;
   dto.staleShares = stat.staleShares;
   dto.time = stat.time;
-  dto.usdPerMin = +stat.usdPerMin;
+  dto.usdPerHour = +stat.usdPerMin;
   dto.validShares = stat.validShares;
   return dto;
 }
@@ -98,9 +98,9 @@ export function calculateAverage(stats: StatEntity[]): StatDto {
   result.validShares = validShares / stats.length;
   result.invalidShares = invalidShares / stats.length;
   result.staleShares = staleShares / stats.length;
-  result.coinsPerMin = coinsPerMin / stats.length;
-  result.usdPerMin = usdPerMin / stats.length;
-  result.btcPerMin = btcPerMin / stats.length;
+  result.coinsPerHour = coinsPerMin / stats.length;
+  result.usdPerHour = usdPerMin / stats.length;
+  result.btcPerHour = btcPerMin / stats.length;
 
   return dtoToHumanReadableDto(result);
 }
@@ -135,9 +135,9 @@ export function calculateMax(stats: StatEntity[]): StatDto {
   result.validShares = validShares;
   result.invalidShares = invalidShares;
   result.staleShares = staleShares;
-  result.coinsPerMin = coinsPerMin;
-  result.usdPerMin = usdPerMin;
-  result.btcPerMin = btcPerMin;
+  result.coinsPerHour = coinsPerMin;
+  result.usdPerHour = usdPerMin;
+  result.btcPerHour = btcPerMin;
 
   return dtoToHumanReadableDto(result);
 }
@@ -147,9 +147,9 @@ export function dtoToHumanReadableDto(dto: StatDto): StatDto {
   result.reportedHashrate /= 1000000;
   result.currentHashrate /= 1000000;
   result.averageHashrate /= 1000000;
-  result.coinsPerMin *= 60;
-  result.usdPerMin *= 60;
-  result.btcPerMin *= 60;
+  result.coinsPerHour *= 60;
+  result.usdPerHour *= 60;
+  result.btcPerHour *= 60;
   return result;
 }
 
@@ -181,13 +181,13 @@ export function getMinUnixTimeByInterval(interval: StatInterval): number {
 export function dtoToAllTimeStatMaxEntity(dto: StatDto): AllTimeStatEntity {
   const ent = new AllTimeStatEntity();
   ent.averageHashrate = (dto.averageHashrate * 1000000).toString();
-  ent.btcPerMin = (dto.btcPerMin / 60).toString();
-  ent.coinsPerMin = (dto.coinsPerMin / 60).toString();
+  ent.btcPerMin = (dto.btcPerHour / 60).toString();
+  ent.coinsPerMin = (dto.coinsPerHour / 60).toString();
   ent.currentHashrate = (dto.currentHashrate * 1000000).toString();
   ent.invalidShares = dto.invalidShares;
   ent.reportedHashrate = (dto.reportedHashrate * 1000000).toString();
   ent.staleShares = dto.staleShares;
-  ent.usdPerMin = (dto.usdPerMin / 60).toString();
+  ent.usdPerMin = (dto.usdPerHour / 60).toString();
   ent.validShares = dto.validShares;
   ent.time = null;
   ent.isMaxEntity = true;
