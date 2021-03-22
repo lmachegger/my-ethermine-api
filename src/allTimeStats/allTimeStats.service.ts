@@ -48,7 +48,7 @@ export class AllTimeStatService {
     if (this.maxInterval) {
       clearInterval(this.maxInterval);
     }
-    this.maxInterval = setInterval(fetchMaxInterval, 86400 * 1000); // 24h
+    this.maxInterval = setInterval(fetchMaxInterval, 600 * 1000); // 10min
   }
 
   fetchApiAndCreateStat() {
@@ -73,6 +73,7 @@ export class AllTimeStatService {
         time: null,
       })) || MIN_ALLTIME_STAT_ENTITY;
     const oldMaxDto = dtoToHumanReadableDto(statToDto(oldMaxEntity));
+    console.log('----------- fetch max');
     console.log(newMaxDto);
     console.log(oldMaxDto);
     console.log(Math.max(newMaxDto.averageHashrate, oldMaxDto.averageHashrate));
