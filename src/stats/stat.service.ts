@@ -11,6 +11,7 @@ import {
   dtoToStat,
   getMinUnixTimeByInterval,
   mapStatsToHumanReadableDto,
+  reduceNumOfStatsWithInterval,
   StatInterval,
   statToDto,
 } from './stat.utils';
@@ -71,7 +72,8 @@ export class StatService {
       },
     });
 
-    const stats = mapStatsToHumanReadableDto(statEntities);
+    const reducedStats = reduceNumOfStatsWithInterval(statEntities, interval);
+    const stats = mapStatsToHumanReadableDto(reducedStats);
     const avgs = calculateAverage(statEntities);
     const maxs = calculateMax(statEntities);
 
@@ -96,7 +98,8 @@ export class StatService {
       take: limit,
     });
 
-    return mapStatsToHumanReadableDto(stats);
+    const reducedStats = reduceNumOfStatsWithInterval(stats, interval);
+    return mapStatsToHumanReadableDto(reducedStats);
   }
 
   async getAvg(): Promise<StatDto> {

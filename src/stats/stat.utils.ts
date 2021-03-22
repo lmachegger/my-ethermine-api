@@ -194,3 +194,34 @@ export function dtoToAllTimeStatMaxEntity(dto: StatDto): AllTimeStatEntity {
 
   return ent;
 }
+
+export function reduceNumOfStatsWithInterval(
+  stats: StatEntity[],
+  interval: string,
+): StatEntity[] {
+  let moduloNum = 1;
+  switch (interval) {
+    case StatInterval.ALL:
+      moduloNum = 24;
+    case StatInterval.YEAR:
+      moduloNum = 24;
+      break;
+    case StatInterval.MONTH:
+      moduloNum = 8;
+      break;
+    case StatInterval.WEEK:
+      moduloNum = 3;
+      break;
+    case StatInterval.DAY:
+      moduloNum = 1;
+      break;
+  }
+
+  const result = new Array();
+  for (let index = 0; index < stats.length; index++) {
+    if (index % moduloNum === 0) {
+      result.push(stats[index]);
+    }
+  }
+  return result;
+}
