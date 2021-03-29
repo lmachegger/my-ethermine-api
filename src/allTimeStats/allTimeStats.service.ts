@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
-import { StatService } from '../stats/stat.service';
 import { IsNull, Not, Repository } from 'typeorm';
 import { AllStatDto } from '../stats/allStat.dto';
 import { apiObjectToDto, fetchFromApi } from '../stats/fetch-stats.utils';
@@ -8,15 +7,17 @@ import { StatDto } from '../stats/stat.dto';
 import {
   calculateAverage,
   calculateMax,
-  dtoToAllTimeStatMaxEntity,
   dtoToHumanReadableDto,
   dtoToStat,
   mapStatsToHumanReadableDto,
-  MIN_ALLTIME_STAT_ENTITY,
   statToDto,
 } from '../stats/stat.utils';
 import { AllTimeStatEntity } from './allTimeStats.entity';
 import { StatEntity } from 'src/stats/stat.entity';
+import {
+  dtoToAllTimeStatMaxEntity,
+  MIN_ALLTIME_STAT_ENTITY,
+} from './allTimeStats.utils';
 
 @Injectable()
 export class AllTimeStatService {
@@ -73,10 +74,6 @@ export class AllTimeStatService {
         time: null,
       })) || MIN_ALLTIME_STAT_ENTITY;
     const oldMaxDto = dtoToHumanReadableDto(statToDto(oldMaxEntity));
-    console.log('----------- fetch max');
-    console.log(newMaxDto);
-    console.log(oldMaxDto);
-    console.log(Math.max(newMaxDto.averageHashrate, oldMaxDto.averageHashrate));
 
     // check all values, and update max dto
     oldMaxDto.averageHashrate = Math.max(

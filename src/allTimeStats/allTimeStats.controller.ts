@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  Query,
 } from '@nestjs/common';
 import { AllStatDto } from '../stats/allStat.dto';
 import { StatDto } from '../stats/stat.dto';
