@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { StatEntity } from 'src/stats/stat.entity';
 import { StatController } from 'src/stats/stat.controller';
@@ -54,7 +53,6 @@ const getssl = () => {
   ],
   providers: [
     // services here
-    AppService,
     StatService,
     AllTimeStatService,
   ],
