@@ -5,7 +5,7 @@ export class StatEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   time: number;
 
   @Column({ type: 'double precision', nullable: true })
