@@ -38,6 +38,9 @@ export class StatService {
   fetchApiAndCreateStat() {
     fetchFromApi(
       (data) => {
+        if (!data?.data?.time) {
+          return;
+        }
         const dto = apiObjectToDto(data);
         this.create(dto);
       },
