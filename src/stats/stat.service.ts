@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, Repository } from 'typeorm';
+import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { AllStatDto } from './allStat.dto';
 import { apiObjectToDto, fetchFromApi } from './fetch-stats.utils';
 import { StatDto } from './stat.dto';
@@ -121,5 +121,24 @@ export class StatService {
 
   async delete(id: string): Promise<any> {
     return await this.statRepo.delete(id);
+  }
+
+  async deleteEveryStatOlderThanOneMonth(): Promise<any> {
+    // get timestamp from 1 month before now
+    const minTimeStamp = getMinUnixTimeByInterval(StatInterval.MONTH);
+
+    // get all stats older than 1 month
+    const statsToDelete = await this.statRepo.find({
+      where: {
+        time: LessThan(minTimeStamp),
+      },
+    });
+
+    // delete stats
+    for await (let stat of statsToDelete) {
+      await this.statRepo.delete(stat.id);
+    }
+
+    return `Successfully deleted ${statsToDelete.length} stats.`;
   }
 }
