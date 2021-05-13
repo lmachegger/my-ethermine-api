@@ -126,6 +126,7 @@ export class StatService {
   async deleteEveryStatOlderThanOneMonth(): Promise<any> {
     // get timestamp from 1 month before now
     const minTimeStamp = getMinUnixTimeByInterval(StatInterval.MONTH);
+    console.log('minTimeStamp: ' + minTimeStamp);
 
     // get all stats older than 1 month
     const statsToDelete = await this.statRepo.find({
@@ -133,11 +134,13 @@ export class StatService {
         time: LessThan(minTimeStamp),
       },
     });
+    console.log('num of stats to delete: ' + statsToDelete);
 
     // delete stats
     for await (let stat of statsToDelete) {
-      await this.statRepo.delete(stat.id.toString());
+      await this.delete(stat.id.toString());
     }
+    console.log('deleted stats');
 
     return `Successfully deleted ${statsToDelete.length} stats.`;
   }
