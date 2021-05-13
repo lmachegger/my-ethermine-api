@@ -107,26 +107,10 @@ export class StatController {
     }
   }
 
-  // @Delete(':id')
-  // async delete(@Param('id') id: string): Promise<any> {
-  //   try {
-  //     return await this.statService.delete(id);
-  //   } catch (e) {
-  //     console.error(e);
-  //     throw new HttpException(
-  //       {
-  //         status: HttpStatus.INTERNAL_SERVER_ERROR,
-  //         error: 'Error deleting stats',
-  //       },
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
-
-  @Delete('deleteOldStats')
-  async deleteOldStats(): Promise<any> {
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<any> {
     try {
-      return await this.statService.deleteEveryStatOlderThanOneMonth();
+      return await this.statService.delete(id);
     } catch (e) {
       console.error(e);
       throw new HttpException(
@@ -138,4 +122,20 @@ export class StatController {
       );
     }
   }
+
+  // @Delete('deleteOldStats')
+  // async deleteOldStats(): Promise<any> {
+  //   try {
+  //     return await this.statService.deleteEveryStatOlderThanOneMonth();
+  //   } catch (e) {
+  //     console.error(e);
+  //     throw new HttpException(
+  //       {
+  //         status: HttpStatus.INTERNAL_SERVER_ERROR,
+  //         error: 'Error deleting stats',
+  //       },
+  //       HttpStatus.INTERNAL_SERVER_ERROR,
+  //     );
+  //   }
+  // }
 }
