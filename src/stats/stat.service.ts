@@ -136,7 +136,7 @@ export class StatService {
 
     // delete stats
     for await (let stat of statsToDelete) {
-      await this.statRepo.delete(stat.id);
+      await this.statRepo.delete(stat.id.toString());
     }
 
     return `Successfully deleted ${statsToDelete.length} stats.`;
