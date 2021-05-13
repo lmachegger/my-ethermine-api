@@ -7,6 +7,7 @@ export enum StatInterval {
   MONTH = 'MONTH',
   WEEK = 'WEEK',
   DAY = 'DAY',
+  NONE = 'NONE',
 }
 
 export function dtoToStat(dto: StatDto): StatEntity {

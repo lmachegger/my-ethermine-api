@@ -41,7 +41,7 @@ export class StatController {
   ): Promise<StatDto[]> {
     try {
       if (!StatInterval[interval]) {
-        interval = StatInterval.ALL;
+        interval = StatInterval.NONE;
       }
       return await this.statService.getAll(limit, StatInterval[interval]);
     } catch (e) {

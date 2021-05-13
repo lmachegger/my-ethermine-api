@@ -101,8 +101,12 @@ export class StatService {
       take: limit,
     });
 
-    const reducedStats = reduceNumOfStatsWithInterval(stats, interval);
-    return mapStatsToHumanReadableDto(reducedStats);
+    if (interval !== StatInterval.NONE)
+      return mapStatsToHumanReadableDto(
+        reduceNumOfStatsWithInterval(stats, interval),
+      );
+
+    return mapStatsToHumanReadableDto(stats);
   }
 
   async getAvg(): Promise<StatDto> {
