@@ -43,6 +43,9 @@ export class StatService {
         }
         const dto = apiObjectToDto(data);
         this.create(dto);
+
+        // delete old stats every few minutes
+        this.deleteEveryStatOlderThanOneMonth();
       },
       (error) => {
         console.error('error happened while fetching: ', error);
@@ -126,7 +129,6 @@ export class StatService {
   async deleteEveryStatOlderThanOneMonth(): Promise<any> {
     // get timestamp from 1 month before now
     const minTimeStamp = getMinUnixTimeByInterval(StatInterval.MONTH);
-    console.log('minTimeStamp: ' + minTimeStamp);
 
     // get all stats older than 1 month
     const statsToDelete = await this.statRepo.find({
@@ -134,13 +136,12 @@ export class StatService {
         time: LessThan(minTimeStamp),
       },
     });
-    console.log('num of stats to delete: ' + statsToDelete);
+    console.log('num of stats to delete: ' + statsToDelete.length);
 
     // delete stats
     for await (let stat of statsToDelete) {
       await this.delete(stat.id.toString());
     }
-    console.log('deleted stats');
 
     return `Successfully deleted ${statsToDelete.length} stats.`;
   }
